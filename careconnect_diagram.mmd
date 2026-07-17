@@ -1,0 +1,31 @@
+sequenceDiagram
+    actor Participant
+    participant RW as «view»<br>:RegisterWindow
+    participant PW as «view»<br>:ParticipantProfileWindow
+    participant RUC as «controller»<br>:RegisteredUserController
+    participant PPC as «controller»<br>:ParticipantProfileController
+    participant P as Participant
+
+    note over Participant,P: USE CASE 1: REGISTER ACCOUNT
+    Participant->>+RW: fill details & submit
+    RW->>+RUC: store(request)
+    RUC->>+P: create()
+    P-->>-RUC: participant created
+    RUC-->>-RW: return redirect
+    RW-->>-Participant: show success message
+
+    note over Participant,P: USE CASE 2: VIEW ACCOUNT
+    Participant->>+PW: request profile page
+    PW->>+PPC: index()
+    PPC->>+P: get details
+    P-->>-PPC: return data
+    PPC-->>-PW: return view with data
+    PW-->>-Participant: display profile
+
+    note over Participant,P: USE CASE 3: EDIT ACCOUNT
+    Participant->>+PW: submit updated details
+    PW->>+PPC: update(request)
+    PPC->>+P: save()
+    P-->>-PPC: update confirmed
+    PPC-->>-PW: return redirect
+    PW-->>-Participant: show updated profile

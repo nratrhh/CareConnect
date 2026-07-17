@@ -1,0 +1,57 @@
+classDiagram
+    class AdminEventController {
+        <<controller>>
+        +index()
+        +store(request)
+        +show(id)
+        +update(request, id)
+        +destroy(id)
+    }
+    class ParticipantEventController {
+        <<controller>>
+        +index(request)
+        +show(id)
+    }
+    class Event {
+        -event_id: int [key]
+        -admin_id: int
+        -title: string
+        -eventImg: string
+        -eventCategory: string
+        -eventShortDesc: string
+        -eventLongDesc: string
+        -status: string
+        +admin()
+        +volunteerEvent()
+        +fundraisingCampaign()
+    }
+    class FundraisingCampaign {
+        -fundraising_campaign_id: int [key]
+        -event_id: int
+        -target_amount: decimal
+        -collected_amount: decimal
+        -start_date: date
+        -end_date: date
+        +event()
+        +donations()
+        +getIsActiveAttribute()
+        +getPercentageAttribute()
+    }
+    class VolunteerEvent {
+        -volunteer_event_id: int [key]
+        -event_id: int
+        -capacity: int
+        -eventDate: date
+        -start_time: time
+        -end_time: time
+        -location: string
+        -location_details: string
+        -benefits: string
+        +event()
+        +applications()
+    }
+    
+    AdminEventController --> Event : manages >
+    ParticipantEventController --> Event : views >
+    Event <|-- FundraisingCampaign
+    Event <|-- VolunteerEvent

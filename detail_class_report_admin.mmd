@@ -1,0 +1,37 @@
+classDiagram
+    class AdminReportController {
+        <<controller>>
+        +showReportsIndex()
+        +generateCertificate(eventID)
+        +downloadFundraisingReport(campaignID)
+        +downloadEngagementReport(eventID)
+        +formatToPDF(data)
+    }
+
+    class Event {
+        -eventID: int (key)
+        -eventName: string
+        -eventDate: date
+        
+        +getEventReportData(eventID)
+    }
+
+    class VolunteerApplication {
+        -applicationID: int (key)
+        -participantID: int
+        -status: string
+        
+        +getCompletedParticipants(eventID)
+    }
+
+    class FundraisingCampaign {
+        -campaignID: int (key)
+        -targetAmount: decimal
+        -collectedAmount: decimal
+        
+        +getFinancialReportData(campaignID)
+    }
+
+    AdminReportController --> Event
+    AdminReportController --> VolunteerApplication
+    AdminReportController --> FundraisingCampaign

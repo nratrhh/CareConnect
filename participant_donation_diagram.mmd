@@ -1,0 +1,24 @@
+sequenceDiagram
+    actor Participant
+    participant DPW as «view»<br>:DonationPaymentWindow
+    participant MAW as «view»<br>:MyActivitiesWindow
+    participant DRW as «view»<br>:DonationReceiptWindow
+    participant DC as «controller»<br>:DonationController
+    participant PAC as «controller»<br>:ParticipantActivityController
+    participant D as Donation
+
+    note over Participant,D: USE CASE 1: MAKE DONATION
+    Participant->>+DPW: submit donation amount & payment details
+    DPW->>+DC: store(request, campaign_id)
+    DC->>+D: create donation record
+    D-->>-DC: donation saved
+    DC-->>-DPW: redirect to success page
+    DPW-->>-Participant: display payment success
+
+    note over Participant,D: USE CASE 2: VIEW DONATION RECEIPT
+    Participant->>+MAW: click to view receipt
+    MAW->>+PAC: receipt(id)
+    PAC->>+D: get donation details (id)
+    D-->>-PAC: return donation details
+    PAC-->>-DRW: return receipt view with data
+    DRW-->>-Participant: display donation receipt

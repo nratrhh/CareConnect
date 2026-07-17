@@ -1,0 +1,40 @@
+classDiagram
+    class DonationController {
+        <<controller>>
+        +create(id)
+        +createPaymentIntent(request)
+        +store(request, id)
+        +simulation(donation_id)
+        +success(donation_id)
+        +donateFPX(request, id)
+        +fpxCallback(request)
+        +fpxReturn(request)
+    }
+    class AdminFundraisingController {
+        <<controller>>
+        +index()
+        +receipt(donationId)
+    }
+    class Donation {
+        -donation_id: int [key]
+        -fundraising_campaign_id: int
+        -participant_id: int
+        -amount: decimal
+        -payment_intent_id: string
+        -status: string
+        -payment_method: string
+        -donation_date: datetime
+        -bill_code: string
+        -transaction_id: string
+        +fundraisingCampaign()
+        +participant()
+    }
+    class FundraisingCampaign {
+        -fundraising_campaign_id: int [key]
+        -target_amount: decimal
+        -collected_amount: decimal
+    }
+    
+    DonationController --> Donation : creates >
+    AdminFundraisingController --> Donation : views >
+    Donation "*" --> "1" FundraisingCampaign : made for >

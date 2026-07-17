@@ -1,0 +1,56 @@
+classDiagram
+    class DonationController {
+        <<controller>>
+        +createDonation(campaignID, participantID, amount, paymentMethod)
+        +processPayment(paymentIntentID)
+    }
+
+    class ParticipantActivityController {
+        <<controller>>
+        +viewReceipt(donationID)
+    }
+
+    class Donation {
+        -donationID: int (key)
+        -fundraisingCampaignID: int
+        -participantID: int
+        -amount: decimal
+        -paymentIntentID: string
+        -status: string
+        -paymentMethod: string
+        -donationDate: datetime
+        -billCode: string
+        -transactionID: string
+        
+        +addDonation(campaignID, participantID, amount, paymentMethod, status, donationDate)
+        +findDonation(donationID)
+        +updateDonationStatus(donationID, status, transactionID)
+        +findAllDonationsByParticipant(participantID)
+    }
+
+    class FundraisingCampaign {
+        -campaignID: int (key)
+        -eventID: int
+        -targetAmount: decimal
+        -collectedAmount: decimal
+        -startDate: date
+        -endDate: date
+        
+        +findCampaign(campaignID)
+        +updateCollectedAmount(campaignID, donationAmount)
+    }
+
+    class Participant {
+        -participantID: int (key)
+        -name: string
+        -icNumber: string
+        -email: string
+        -phone: string
+        
+        +findParticipant(participantID)
+    }
+
+    DonationController --> Donation
+    ParticipantActivityController --> Donation
+    Donation --> FundraisingCampaign
+    Donation --> Participant

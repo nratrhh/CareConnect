@@ -1,0 +1,45 @@
+classDiagram
+    class VolunteerApplicationController {
+        <<controller>>
+        +create()
+        +store(request)
+        +edit(id)
+        +update(request, id)
+        +destroy(request, id)
+    }
+    class AdminApplicationController {
+        <<controller>>
+        +index(request)
+        +updateStatus(request, id)
+        +show(id)
+    }
+    class VolunteerApplication {
+        -application_id: int [key]
+        -volunteer_event_id: int
+        -participant_id: int
+        -skills: string
+        -notes: string
+        -status: string
+        -decline_reason: string
+        -cancel_reason: string
+        -applied_at: datetime
+        +volunteerEvent()
+        +participant()
+        +getFormattedStatusAttribute()
+    }
+    class VolunteerEvent {
+        -volunteer_event_id: int [key]
+        -capacity: int
+        -eventDate: date
+        -location: string
+    }
+    class Participant {
+        -participant_id: int [key]
+        -name: string
+        -email: string
+    }
+    
+    VolunteerApplicationController --> VolunteerApplication : manages >
+    AdminApplicationController --> VolunteerApplication : reviews >
+    VolunteerApplication "*" --> "1" VolunteerEvent : belongs to >
+    VolunteerApplication "*" --> "1" Participant : applied by >

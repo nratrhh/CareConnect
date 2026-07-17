@@ -1,0 +1,44 @@
+sequenceDiagram
+    actor Participant
+    participant MAW as «view»<br>:MyActivitiesWindow
+    participant VAW as «view»<br>:VolunteerApplyWindow
+    participant VAC as «controller»<br>:VolunteerApplicationController
+    participant VA as VolunteerApplication
+
+    note over Participant,VA: USE CASE 1: APPLY VOLUNTEER
+    Participant->>+VAW: fill skills, notes & submit
+    VAW->>+VAC: store(request)
+    VAC->>+VA: create application
+    VA-->>-VAC: application saved
+    VAC-->>-VAW: return redirect
+    VAW-->>-Participant: display apply success message
+
+    note over Participant,VA: USE CASE 2: VIEW APPLICATION
+    Participant->>+MAW: click to view application details
+    MAW->>+VAC: show(id)
+    VAC->>+VA: get application details
+    VA-->>-VAC: return application data
+    VAC-->>-MAW: return view with data
+    MAW-->>-Participant: display application details
+
+    note over Participant,VA: USE CASE 3: EDIT APPLICATION
+    Participant->>+VAW: modify application details & submit
+    VAW->>+VAC: update(request, id)
+    VAC->>+VA: update application data
+    VA-->>-VAC: update confirmed
+    VAC-->>-MAW: return redirect
+    MAW-->>-Participant: display updated application
+
+    note over Participant,VA: USE CASE 4: CANCEL APPLICATION
+    Participant->>+MAW: click cancel application
+    MAW->>+VAC: destroy(request, id)
+    
+    alt [applicationStatus=pending]
+        VAC->>+VA: deleteApplication(id)
+        VA-->>-VAC: record deleted
+        VAC-->>-MAW: return success redirect
+        MAW-->>-Participant: display cancellation confirmed
+    else [applicationStatus!=pending]
+        VAC-->>MAW: return error redirect
+        MAW-->>Participant: display cannot cancel approved/declined application
+    end

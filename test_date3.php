@@ -1,0 +1,10 @@
+<?php require 'vendor/autoload.php';
+$app = require_once 'bootstrap/app.php';
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+$kernel->bootstrap();
+$model = \App\Models\VolunteerEvent::whereHas('event', function($q) { $q->where('title', 'Kasih Warga Emas'); })->first();
+$d = $model->eventDate;
+echo "Class: " . get_class($d) . "\n";
+echo "Date string: " . (string)$d . "\n";
+echo "Timezone: " . $d->timezoneName . "\n";
+echo "Parsed: " . \Carbon\Carbon::parse($d)->format('M d, Y') . "\n";

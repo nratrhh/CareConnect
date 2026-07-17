@@ -1,0 +1,33 @@
+sequenceDiagram
+    actor Admin
+    participant AAW as «view»<br>:AdminApplicationsWindow
+    participant AAC as «controller»<br>:AdminApplicationController
+    participant VA as VolunteerApplication
+    participant N as Notification
+
+    note over Admin,N: USE CASE 1: VIEW VOLUNTEER APPLICATION
+    Admin->>+AAW: request to view applications
+    AAW->>+AAC: index(request)
+    AAC->>+VA: retrieve applications list
+    VA-->>-AAC: return application data
+    
+    opt view specific application
+        AAC->>+VA: show(id)
+        VA-->>-AAC: return application details
+    end
+    
+    AAC-->>-AAW: return view with data
+    AAW-->>-Admin: display volunteer applications
+
+    note over Admin,N: USE CASE 2: MANAGE APPLICATION STATUS
+    Admin->>+AAW: update status (e.g., Approve/Decline) & submit
+    AAW->>+AAC: updateStatus(request, id)
+    AAC->>+VA: update status in record
+    VA-->>-AAC: status updated confirmed
+    
+    %% Send Notification automatically after status update
+    AAC->>+N: notifyParticipant()
+    N-->>-AAC: notification sent to participant
+    
+    AAC-->>-AAW: return success redirect
+    AAW-->>-Admin: display updated status success message

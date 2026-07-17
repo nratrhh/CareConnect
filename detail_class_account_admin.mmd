@@ -1,0 +1,22 @@
+classDiagram
+    class AdminProfileController {
+        <<controller>>
+        +showProfile(adminID)
+        +updateProfile(adminID, name, email, phone, profilePicture)
+        +updatePassword(adminID, currentPassword, newPassword)
+    }
+
+    class Admin {
+        -adminID: int (key)
+        -name: string
+        -email: string
+        -phone: string
+        -password: string
+        -profilePicture: string
+        
+        +findAdmin(adminID)
+        +updateAdminDetails(adminID, name, email, phone, profilePicture)
+        +updatePassword(adminID, newPassword)
+    }
+
+    AdminProfileController --> Admin

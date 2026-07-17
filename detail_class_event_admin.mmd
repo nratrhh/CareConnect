@@ -1,0 +1,49 @@
+classDiagram
+    class AdminEventController {
+        <<controller>>
+        +createEvent(eventName, eventDesc, eventDate, eventLocation, eventStatus, eventImage)
+        +showEvent(eventID)
+        +updateEvent(eventID, eventName, eventDesc, eventDate, eventLocation, eventStatus)
+        +deleteEvent(eventID)
+        +confirmDelete(eventID)
+    }
+
+    class Event {
+        -eventID: int (key)
+        -eventName: string
+        -eventDesc: string
+        -eventDate: date
+        -eventLocation: string
+        -eventStatus: string
+        -eventImage: blob
+        
+        +addEvent(eventName, eventDesc, eventDate, eventLocation, eventStatus, eventImage)
+        +findEvent(eventID)
+        +saveEvent(eventID, eventName, eventDesc, eventDate, eventLocation, eventStatus)
+        +deleteEvent(eventID)
+        +findAllEvents()
+    }
+
+    class FundraisingCampaign {
+        -campaignID: int (key)
+        -targetAmount: currency
+        -collectedAmount: currency
+        -startDate: date
+        -endDate: date
+        
+        +findAllCampaigns()
+        +getCampaignSummary(eventID)
+        +updateCollectedAmount(campaignID, donationAmount)
+    }
+
+    class VolunteerEvent {
+        -volunteerEventID: int (key)
+        -capacity: int
+        
+        +findVolunteerEvent(eventID)
+        +getCapacity(volunteerEventID)
+    }
+
+    AdminEventController --> Event
+    Event <|-- FundraisingCampaign
+    Event <|-- VolunteerEvent

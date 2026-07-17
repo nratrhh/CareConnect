@@ -1,0 +1,42 @@
+classDiagram
+    class ParticipantEventController {
+        <<controller>>
+        +index()
+        +show(eventID)
+    }
+
+    class Event {
+        -eventID: int (key)
+        -eventName: string
+        -eventDesc: string
+        -eventDate: date
+        -eventLocation: string
+        -eventStatus: string
+        -eventImage: blob
+        
+        +findAllEvents()
+        +findEvent(eventID)
+    }
+
+    class FundraisingCampaign {
+        -campaignID: int (key)
+        -targetAmount: currency
+        -collectedAmount: currency
+        -startDate: date
+        -endDate: date
+        
+        +findAllCampaigns()
+        +getCampaignSummary(eventID)
+    }
+
+    class VolunteerEvent {
+        -volunteerEventID: int (key)
+        -capacity: int
+        
+        +findVolunteerEvent(eventID)
+        +getCapacity(volunteerEventID)
+    }
+
+    ParticipantEventController --> Event
+    Event <|-- FundraisingCampaign
+    Event <|-- VolunteerEvent

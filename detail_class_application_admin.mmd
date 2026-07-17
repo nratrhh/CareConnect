@@ -1,0 +1,44 @@
+classDiagram
+    class AdminApplicationController {
+        <<controller>>
+        +showApplicationsList(eventID)
+        +showApplicationDetails(applicationID)
+        +updateApplicationStatus(applicationID, status, declineReason)
+    }
+
+    class VolunteerApplication {
+        -applicationID: int (key)
+        -volunteerEventID: int
+        -participantID: int
+        -skills: string
+        -notes: string
+        -status: string
+        -declineReason: string
+        -appliedAt: datetime
+        
+        +findApplication(applicationID)
+        +findAllApplications(eventID)
+        +updateApplicationStatus(applicationID, status, declineReason)
+    }
+
+    class VolunteerEvent {
+        -volunteerEventID: int (key)
+        -capacity: int
+        -eventDate: date
+        -location: string
+        
+        +findVolunteerEvent(volunteerEventID)
+    }
+
+    class Notification {
+        -notificationID: int (key)
+        -userID: int
+        -message: string
+        -sentAt: datetime
+        
+        +notifyParticipant(participantID, message)
+    }
+
+    AdminApplicationController --> VolunteerApplication
+    AdminApplicationController --> Notification
+    VolunteerApplication --> VolunteerEvent

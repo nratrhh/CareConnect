@@ -1,0 +1,31 @@
+sequenceDiagram
+    actor Admin
+    participant ARW as «view»<br>:AdminReportsWindow
+    participant ARC as «controller»<br>:AdminReportController
+    participant DB as DataModels (Event/Donation)
+
+    note over Admin,DB: USE CASE 1: GENERATE E-CERTIFICATE
+    Admin->>+ARW: request to generate e-certificates for participants
+    ARW->>+ARC: generateCertificate(eventId)
+    ARC->>+DB: retrieve participant & completion data
+    DB-->>-ARC: return participant data
+    ARC->>ARC: process & generate certificate files
+    ARC-->>-ARW: return generated certificates
+    ARW-->>-Admin: display success & provide download links
+
+    note over Admin,DB: USE CASE 2: GENERATE REPORT
+    Admin->>+ARW: request to view/generate report
+    ARW->>+ARC: index() / process filters
+    ARC->>+DB: aggregate reporting data
+    DB-->>-ARC: return report data
+    ARC-->>-ARW: return view with report data
+    ARW-->>-Admin: display report on screen
+
+    note over Admin,DB: EXTENDED USE CASE: PRINT REPORT
+    opt EXTEND: Print / Download Report
+        Admin->>+ARW: click Print or Download
+        ARW->>+ARC: download() / downloadFundraisingReport()
+        ARC->>ARC: format data as PDF/Excel
+        ARC-->>-ARW: return file stream
+        ARW-->>-Admin: prompt file download / print dialog
+    end

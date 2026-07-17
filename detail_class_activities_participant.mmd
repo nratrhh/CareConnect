@@ -1,0 +1,42 @@
+classDiagram
+    class ParticipantActivityController {
+        <<controller>>
+        +index(participantID)
+        +certificate(applicationID)
+    }
+
+    class VolunteerApplication {
+        -applicationID: int (key)
+        -volunteerEventID: int
+        -participantID: int
+        -status: string
+        -appliedAt: datetime
+        
+        +findAllApplicationsByParticipant(participantID)
+        +checkCompletionStatus(applicationID)
+        +getApplicationDetails(applicationID)
+    }
+
+    class Donation {
+        -donationID: int (key)
+        -fundraisingCampaignID: int
+        -participantID: int
+        -amount: decimal
+        -status: string
+        -donationDate: datetime
+        
+        +findAllDonationsByParticipant(participantID)
+    }
+
+    class VolunteerEvent {
+        -volunteerEventID: int (key)
+        -capacity: int
+        -eventDate: date
+        -location: string
+        
+        +getEventDetails(volunteerEventID)
+    }
+
+    ParticipantActivityController --> VolunteerApplication
+    ParticipantActivityController --> Donation
+    VolunteerApplication --> VolunteerEvent

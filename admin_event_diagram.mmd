@@ -1,0 +1,48 @@
+sequenceDiagram
+    actor Admin
+    participant AEW as «view»<br>:AdminEventsWindow
+    participant AEC as «controller»<br>:AdminEventController
+    participant E as Event
+    participant N as Notification
+
+    note over Admin,N: USE CASE 1: CREATE EVENT
+    Admin->>+AEW: fill new event details & submit
+    AEW->>+AEC: store(request)
+    AEC->>+E: create new event record
+    E-->>-AEC: record created
+    AEC-->>-AEW: return success redirect
+    AEW-->>-Admin: display event created success message
+
+    note over Admin,N: USE CASE 2: VIEW EVENT
+    Admin->>+AEW: click to view event details
+    AEW->>+AEC: show(id)
+    AEC->>+E: get event details (id)
+    E-->>-AEC: return event data
+    AEC-->>-AEW: return view with event data
+    AEW-->>-Admin: display event details
+
+    note over Admin,N: USE CASE 3: EDIT EVENT
+    Admin->>+AEW: modify event details & submit
+    AEW->>+AEC: update(request, id)
+    AEC->>+E: update event record
+    E-->>-AEC: update confirmed
+    
+    AEC->>+N: notifyAllParticipants()
+    N-->>-AEC: notifications sent
+    
+    AEC-->>-AEW: return success redirect
+    AEW-->>-Admin: display updated event
+
+    note over Admin,E: USE CASE 4: DELETE EVENT
+    Admin->>+AEW: click delete event
+    AEW->>+AEC: destroy(id)
+    
+    alt [Event has no dependencies]
+        AEC->>+E: delete record
+        E-->>-AEC: deletion confirmed
+        AEC-->>-AEW: return success redirect
+        AEW-->>-Admin: display deletion success
+    else [Event has dependencies (e.g., participants)]
+        AEC-->>AEW: return error redirect
+        AEW-->>Admin: display cannot delete event with participants
+    end

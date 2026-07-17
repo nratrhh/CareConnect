@@ -1,0 +1,33 @@
+classDiagram
+    class AdminFundraisingController {
+        <<controller>>
+        +index()
+        +receipt(donationId)
+    }
+
+    class FundraisingCampaign {
+        -campaignID: int (key)
+        -eventID: int
+        -targetAmount: decimal
+        -collectedAmount: decimal
+        -startDate: date
+        -endDate: date
+        
+        +getCampaigns()
+    }
+
+    class Donation {
+        -donationID: int (key)
+        -fundraisingCampaignID: int
+        -participantID: int
+        -amount: decimal
+        -status: string
+        -paymentMethod: string
+        -donationDate: datetime
+        
+        +getDonations()
+        +getReceiptDetails(donationId)
+    }
+
+    AdminFundraisingController --> FundraisingCampaign
+    AdminFundraisingController --> Donation

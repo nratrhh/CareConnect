@@ -1,0 +1,49 @@
+classDiagram
+    class VolunteerApplicationController {
+        <<controller>>
+        +createApplication(volunteerEventID, participantID, skills, notes)
+        +showApplication(applicationID)
+        +updateApplication(applicationID, skills, notes)
+        +cancelApplication(applicationID)
+    }
+
+    class VolunteerApplication {
+        -applicationID: int (key)
+        -volunteerEventID: int
+        -participantID: int
+        -skills: string
+        -notes: string
+        -status: string
+        -declineReason: string
+        -cancelReason: string
+        -appliedAt: datetime
+        
+        +addApplication(volunteerEventID, participantID, skills, notes, status, appliedAt)
+        +findApplication(applicationID)
+        +saveApplication(applicationID, skills, notes, status)
+        +cancelApplication(applicationID, cancelReason)
+        +findAllApplications(participantID)
+    }
+
+    class VolunteerEvent {
+        -volunteerEventID: int (key)
+        -capacity: int
+        
+        +findVolunteerEvent(volunteerEventID)
+        +getCapacity(volunteerEventID)
+    }
+
+    class Participant {
+        -participantID: int (key)
+        -name: string
+        -icNumber: string
+        -email: string
+        -phone: string
+        
+        +findParticipant(participantID)
+        +getParticipantDetails(participantID)
+    }
+
+    VolunteerApplicationController --> VolunteerApplication
+    VolunteerApplication --> VolunteerEvent
+    VolunteerApplication --> Participant

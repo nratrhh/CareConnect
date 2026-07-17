@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor Participant
+    participant ELW as «view»<br>:EventListWindow
+    participant EDW as «view»<br>:EventDetailWindow
+    participant PEC as «controller»<br>:ParticipantEventController
+    participant E as Event
+
+    note over Participant,E: BAHAGIAN 1: VIEW EVENT LIST
+    Participant->>+ELW: request to view events
+    ELW->>+PEC: index()
+    PEC->>+E: retrieve all events
+    E-->>-PEC: return events data
+    PEC-->>-ELW: return view with data
+    ELW-->>-Participant: display event list
+
+    note over Participant,E: BAHAGIAN 2: VIEW EVENT DETAILS
+    Participant->>+ELW: click on specific event
+    ELW->>+PEC: show(eventId)
+    PEC->>+E: retrieve event details (eventId)
+    E-->>-PEC: return event details
+    PEC-->>-EDW: return view with details
+    EDW-->>-Participant: display event details

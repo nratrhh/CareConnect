@@ -1,0 +1,30 @@
+sequenceDiagram
+    actor Participant
+    participant MAW as «view»<br>:MyActivitiesWindow
+    participant CW as «view»<br>:CertificateWindow
+    participant PAC as «controller»<br>:ParticipantActivityController
+    participant VA as VolunteerApplication
+    participant D as Donation
+
+    note over Participant,D: USE CASE 1: VIEW ACTIVITIES
+    Participant->>+MAW: request to view activities
+    MAW->>+PAC: index()
+    
+    %% Retrieve Volunteer Applications
+    PAC->>+VA: retrieve volunteer activities
+    VA-->>-PAC: return volunteer data
+    
+    %% Retrieve Donations
+    PAC->>+D: retrieve donation activities
+    D-->>-PAC: return donation data
+    
+    PAC-->>-MAW: return view with all activities
+    MAW-->>-Participant: display activities list
+
+    note over Participant,D: USE CASE 2: VIEW E-CERTIFICATE
+    Participant->>+MAW: click view certificate
+    MAW->>+PAC: certificate(id)
+    PAC->>+VA: get application & completion details
+    VA-->>-PAC: return details
+    PAC-->>-CW: return certificate view with data
+    CW-->>-Participant: display e-certificate

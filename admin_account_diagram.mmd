@@ -1,0 +1,29 @@
+sequenceDiagram
+    actor Admin
+    participant APW as «view»<br>:AdminProfileWindow
+    participant APC as «controller»<br>:AdminProfileController
+    participant A as Admin
+
+    note over Admin,A: USE CASE 1: VIEW ACCOUNT (ADMIN)
+    Admin->>+APW: request to view profile
+    APW->>+APC: index()
+    APC->>+A: get admin details
+    A-->>-APC: return admin data
+    APC-->>-APW: return profile view with data
+    APW-->>-Admin: display admin profile
+
+    note over Admin,A: USE CASE 2: EDIT ACCOUNT (ADMIN)
+    Admin->>+APW: modify profile details & submit
+    APW->>+APC: update(request)
+    APC->>+A: update admin record
+    A-->>-APC: update confirmed
+    APC-->>-APW: return redirect
+    APW-->>-Admin: display updated profile
+
+    note over Admin,A: USE CASE 3: UPDATE PASSWORD (ADMIN)
+    Admin->>+APW: submit new password
+    APW->>+APC: updatePassword(request)
+    APC->>+A: update password field
+    A-->>-APC: password updated
+    APC-->>-APW: return redirect
+    APW-->>-Admin: display success message

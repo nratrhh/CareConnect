@@ -1,0 +1,42 @@
+classDiagram
+    class RegisteredUserController {
+        <<controller>>
+        +create()
+        +store()
+    }
+    class ParticipantProfileController {
+        <<controller>>
+        +index()
+        +update(request)
+        +updatePassword(request)
+    }
+    class AdminProfileController {
+        <<controller>>
+        +index()
+        +update(request)
+        +updatePassword(request)
+    }
+    class Participant {
+        -participant_id: int [key]
+        -name: string
+        -ic_number: string
+        -email: string
+        -phone: string
+        -password: string
+        -profile_picture: string
+        +donations()
+        +volunteerApplications()
+    }
+    class Admin {
+        -admin_id: int [key]
+        -name: string
+        -email: string
+        -phone: string
+        -password: string
+        -profile_picture: string
+        +events()
+    }
+    
+    RegisteredUserController --> Participant : manages >
+    ParticipantProfileController --> Participant : manages >
+    AdminProfileController --> Admin : manages >
